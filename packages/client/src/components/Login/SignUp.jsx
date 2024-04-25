@@ -1,11 +1,15 @@
 import { ArrowBackIcon } from "@chakra-ui/icons";
-import { Button, ButtonGroup, Heading, VStack } from "@chakra-ui/react";
-import { Form, Formik } from "formik";
-import { useNavigate } from "react-router";
-import TextField from "./TextField";
+import { Button, ButtonGroup, Heading, Text, VStack } from "@chakra-ui/react";
 import { formSchema } from "@messenger-clone/common";
+import { Form, Formik } from "formik";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router";
+import { AccountContext } from "../AccountContext";
+import TextField from "./TextField";
 
 const SignUp = () => {
+  const { setUser } = useContext(AccountContext);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
   return (
     <Formik
@@ -14,7 +18,7 @@ const SignUp = () => {
       onSubmit={(values, actions) => {
         const vals = { ...values };
         actions.resetForm();
-        fetch("http://localhost:5000/auth/register", {
+        fetch("http://localhost:5000/auth/signup", {
           method: "POST",
           credentials: "include",
           headers: {
@@ -33,7 +37,12 @@ const SignUp = () => {
           })
           .then(data => {
             if (!data) return;
-            console.log(data);
+            setUser({ ...data });
+            if (data.status) {
+              setError(data.status);
+            } else if (data.loggedIn) {
+              navigate("/home");
+            }
           });
       }}
     >
@@ -46,6 +55,9 @@ const SignUp = () => {
         spacing="1rem"
       >
         <Heading>Sign Up</Heading>
+        <Text as="p" color="red.500">
+          {error}
+        </Text>
         <TextField
           name="username"
           placeholder="Enter username"
@@ -58,6 +70,7 @@ const SignUp = () => {
           placeholder="Enter password"
           autoComplete="off"
           label="Password"
+          type="password"
         />
 
         <ButtonGroup pt="1rem">
