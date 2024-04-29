@@ -5,7 +5,9 @@ import { Form, Formik } from "formik";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 import { AccountContext } from "../AccountContext";
-import TextField from "./TextField";
+import TextField from "../TextField";
+// import { config } from "dotenv";
+// config();
 
 const Login = () => {
   const { setUser } = useContext(AccountContext);
@@ -18,7 +20,10 @@ const Login = () => {
       onSubmit={(values, actions) => {
         const vals = { ...values };
         actions.resetForm();
-        fetch("http://localhost:5000/auth/login", {
+        fetch(
+          "http://localhost:5000/auth/login",
+          // `${process.env.REACT_APP_SERVER_URL}/auth/login`,
+           {
           method: "POST",
           credentials: "include",
           headers: {

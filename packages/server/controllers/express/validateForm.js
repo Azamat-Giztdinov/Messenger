@@ -1,6 +1,6 @@
-const {formSchema} = require("@messenger-clone/common")
+const { formSchema } = require("@messenger-clone/common")
 
-module.exports.validateForm = (req, res, next) => {
+const validateForm = (req, res, next) => {
   const formData = req.body;
   formSchema
     .validate(formData)
@@ -18,4 +18,6 @@ module.exports.validateForm = (req, res, next) => {
       }
     });
 };
+
+module.exports= validateForm;
 

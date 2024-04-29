@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router";
-
+// import { config } from "dotenv";
+// config()
 const { createContext, useState, useEffect } = require("react");
 
 export const AccountContext = createContext();
@@ -8,7 +9,9 @@ const UserContext = ({ children }) => {
   const [user, setUser] = useState({ loggedIn: null });
   const navigate = useNavigate();
   useEffect(() => {
-    fetch("http://localhost:5000/auth/login", {
+    fetch(
+      "http://localhost:5000/auth/login",
+      {
       credentials: "include",
     })
       .catch(err => {
