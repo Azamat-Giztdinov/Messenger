@@ -1,18 +1,21 @@
 import { useNavigate } from "react-router";
-// import { config } from "dotenv";
-// config()
+
 const { createContext, useState, useEffect } = require("react");
 
 export const AccountContext = createContext();
 
 const UserContext = ({ children }) => {
-  const [user, setUser] = useState({ loggedIn: null });
+  const [user, setUser] = useState({
+    loggedIn: null,
+    token: localStorage.getItem("token"),
+  });
   const navigate = useNavigate();
   useEffect(() => {
-    fetch(
-      "http://localhost:5000/auth/login",
-      {
-      credentials: "include",
+    fetch('http://localhost:4000/auth/login', {
+        credentials: "include",
+      headers: {
+        authorization: `Bearer ${user.token}`,
+      },
     })
       .catch(err => {
         setUser({ loggedIn: false });
@@ -33,7 +36,6 @@ const UserContext = ({ children }) => {
         setUser({ ...data });
         navigate("/home");
       });
-
   }, []);
   return (
     <AccountContext.Provider value={{ user, setUser }}>

@@ -1,4 +1,4 @@
-const { formSchema } = require("@messenger-clone/common")
+const { formSchema } = require("@messenger-clone/common");
 
 const validateForm = (req, res, next) => {
   const formData = req.body;
@@ -9,15 +9,11 @@ const validateForm = (req, res, next) => {
     })
     .then(valid => {
       if (valid) {
-
         next();
-        console.log("form is good");
-        } else {
-        console.log("not good");
+      } else {
         res.status(422).send();
       }
     });
 };
 
-module.exports= validateForm;
-
+module.exports = validateForm;

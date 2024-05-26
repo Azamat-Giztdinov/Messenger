@@ -1,9 +1,32 @@
-const handleLogin = (req,res) => {
-    if (req.session.user && req.session.user.username) {
-        res.json({ loggedIn: true, username: req.session.user.username });
-      } else {
-        res.json({ loggedIn: false });
+const { jwtVerify, getJwt } = require("../jwt/jwtAuth");
+const pool = require("../../db");
+require("dotenv").config();
+
+const handleLogin = async (req, res) => {
+  const token = getJwt(req);
+  console.log('error')
+  if (!token) {
+    res.json({ loggedIn: false });
+    return;
+  }
+
+  jwtVerify(token, process.env.JWT_SECRET)
+    .then(async decoded => {
+      const potentialUser = await pool.query(
+        "SELECT username FROM users u WHERE u.username = $1",
+        [decoded.username]
+      );
+
+      if (potentialUser.rowCount === 0) {
+        res.json({ loggedIn: false, token: null });
+        return;
       }
-}
+
+      res.json({ loggedIn: true, token });
+    })
+    .catch(() => {
+      res.json({ loggedIn: false });
+    });
+};
 
 module.exports = handleLogin;

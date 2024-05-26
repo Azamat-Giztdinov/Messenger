@@ -1,23 +1,19 @@
 const redisClient = require("../../redis");
+const addFriend = require("./addFriend");
 const parseFriendList = require("./parseFriendList");
 
 const initializeUser = async socket => {
-  socket.user = { ...socket.request.session.user };
   socket.join(socket.user.userid);
   await redisClient.hset(
     `userid:${socket.user.username}`,
     "userid",
     socket.user.userid,
-    // "connected",
-    // true
-  );
-  await redisClient.hset(
-    `userid:${socket.user.username}`,
-    // "userid",
-    // socket.user.userid,
     "connected",
     true
   );
+
+  await addFriend(socket, "lester", () => {});
+
   const friendList = await redisClient.lrange(
     `friends:${socket.user.username}`,
     0,
@@ -36,6 +32,7 @@ const initializeUser = async socket => {
     0,
     -1
   );
+
   const messages = msgQuery.map(msgStr => {
     const parsedStr = msgStr.split(".");
     return { to: parsedStr[0], from: parsedStr[1], content: parsedStr[2] };

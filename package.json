@@ -1,10 +1,16 @@
 {
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "author": "",
+  "version": "1.0.0",
+  "main": "index.js",
   "license": "MIT",
+  "private": "true",
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "scripts": {
+    "dev:server": "yarn workspace @messenger-clone/server dev",
+    "dev:client": "yarn workspace @messenger-clone/client start",
+    "build:client": "yarn workspace @messenger-clone/client build",
+    "start": "yarn workspace @messenger-clone/server start"
+  }
 }
