@@ -34,6 +34,7 @@ const SignUp = () => {
           body: JSON.stringify(vals),
         })
           .catch(err => {
+            console.log('err')
             return;
           })
           .then(res => {

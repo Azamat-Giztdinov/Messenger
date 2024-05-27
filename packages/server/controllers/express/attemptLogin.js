@@ -4,6 +4,7 @@ const { v4: uuidv4 } = require("uuid");
 const { jwtSign } = require("../jwt/jwtAuth");
 
 const attemptRegister = async (req, res) => {
+  console.log("OK")
   const existingUser = await pool.query(
     "SELECT username from users WHERE username=$1",
     [req.body.username]

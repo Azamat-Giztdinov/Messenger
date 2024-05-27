@@ -8,7 +8,7 @@ const attemptRegister = async (req, res) => {
     "SELECT username from users WHERE username=$1",
     [req.body.username]
   );
-
+  console.log("ERRor")
   if (existingUser.rowCount === 0) {
     // register
     const hashedPass = await bcrypt.hash(req.body.password, 10);

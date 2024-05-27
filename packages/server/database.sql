@@ -6,5 +6,3 @@ CREATE TABLE users(
 );
 
 INSERT INTO users(username, passhash) values($1,$2);
-
-drop table users;
