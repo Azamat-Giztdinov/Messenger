@@ -22,6 +22,7 @@ const Login = () => {
       validationSchema={formSchema}
       onSubmit={(values, actions) => {
         const vals = { ...values };
+        console.log(vals)
         actions.resetForm();
         fetch(`http://localhost:4000/auth/login`, {
             method: "POST",
@@ -31,10 +32,10 @@ const Login = () => {
           },
           body: JSON.stringify(vals),
         })
-          // .catch(err => {
-          //   console.log('err')
-          //   return;
-          // })
+          .catch(err => {
+            console.log('err: ', err)
+            return;
+          })
           .then(res => {
             console.log('then1')
             if (!res || !res.ok || res.status >= 400) {
@@ -53,10 +54,6 @@ const Login = () => {
               localStorage.setItem("token", data.token);
               navigate("/home");
             }
-          })
-          .catch(err => {
-            console.log('err')
-            return;
           });
       }}
     >

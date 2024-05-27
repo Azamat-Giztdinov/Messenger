@@ -8,6 +8,13 @@ const initializeUser = async socket => {
     `userid:${socket.user.username}`,
     "userid",
     socket.user.userid,
+    // "connected",
+    // true
+  );
+  await redisClient.hset(
+    `userid:${socket.user.username}`,
+    // "userid",
+    // socket.user.userid,
     "connected",
     true
   );

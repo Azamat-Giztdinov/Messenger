@@ -8,9 +8,7 @@ const attemptRegister = async (req, res) => {
     "SELECT username from users WHERE username=$1",
     [req.body.username]
   );
-  console.log("ERRor")
   if (existingUser.rowCount === 0) {
-    // register
     const hashedPass = await bcrypt.hash(req.body.password, 10);
     const newUserQuery = await pool.query(
       "INSERT INTO users(username, passhash, userid) values($1,$2,$3) RETURNING id, username, userid",
@@ -30,7 +28,6 @@ const attemptRegister = async (req, res) => {
         res.json({ loggedIn: true, token });
       })
       .catch(err => {
-        console.log(err);
         res.json({ loggedIn: false, status: "Try again later" });
       });
   } else {
